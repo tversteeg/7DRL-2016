@@ -1,5 +1,6 @@
 require(assetdir .. "rogue/tribe")
 require(assetdir .. "rogue/human")
+require(assetdir .. "rogue/player")
 
 local map = {}
 
@@ -11,6 +12,7 @@ ROOM_MIN_SIZE = 3
 
 map.tiles = {}
 map.tribes = {}
+map.player = {}
 
 function roomcollides(room1, room2)
 	if room1.x > room2.x + room2.width then
@@ -98,6 +100,8 @@ function map.create(width, height, rooms)	map.width = width
 
 		map.tribes[i] = tribe
 	end
+
+	map.player = newPlayer(map.tribes[1])
 end
 
 function map.render(xpos, ypos)

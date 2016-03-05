@@ -44,8 +44,8 @@ function keydown(keycode)
 				menu_selected = menu_selected - 1
 			end
 		elseif keycode == 65293 then
-			state = "Game"
 			if menu_items[menu_selected] == "Play" then
+				state = "Game"
 				game = rogue
 				game.init()
 			end

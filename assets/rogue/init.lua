@@ -1,6 +1,7 @@
 local rogue = {}
 
 map = require(assetdir .. "rogue/map")
+require(assetdir .. "rogue/player")
 
 function rogue.init()
 	print("Rogue!")
@@ -9,6 +10,7 @@ function rogue.init()
 end
 
 function rogue.update()
+	map.player:handleinput()
 end
 
 function rogue.render()
