@@ -140,7 +140,7 @@ int main(int argc, char **argv)
 		return 1;
 	}
 	loadLua();
-	createWindow("rogueliek - " TOSTRING(ROGUELIEK_VERSION), DEFAULT_WIDTH, DEFAULT_HEIGHT);
+	createWindow("Ancestral Roots - " TOSTRING(ROGUELIEK_VERSION), DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	runGame();
 
 	showCursor();

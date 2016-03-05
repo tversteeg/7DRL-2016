@@ -1,21 +1,21 @@
-diablo = require(assetdir .. "diablo")
 rogue = require(assetdir .. "rogue")
 
 state = "Menu"
 game = nil
 
-menu_items = {"Roguelike", "Diablolike", "FFlike"}
-menu_len = 3
+menu_items = {"Play", "Config"}
+menu_len = 2
 menu_selected = 1
 
 function renderselectionmenu(width, height)
 	clear()
+	drawstring(width / 2 - math.floor(string.len("Ancestral Roots") / 2), 8, "Ancestral Roots", 255, 0, 0)
 	for i = 1, menu_len do
 		local color = {127, 127, 127}
 		if menu_selected == i then
 			color = {255, 255, 255}
 		end
-		drawstring(width / 2 - math.floor(string.len(menu_items[i]) / 2), 8 + i * 4, menu_items[i], color[1], color[2], color[3])
+		drawstring(width / 2 - math.floor(string.len(menu_items[i]) / 2), 12 + i * 4, menu_items[i], color[1], color[2], color[3])
 	end
 
 	for i = 1, width - 2 do
@@ -45,12 +45,10 @@ function keydown(keycode)
 			end
 		elseif keycode == 65293 then
 			state = "Game"
-			if menu_items[menu_selected] == "Roguelike" then
+			if menu_items[menu_selected] == "Play" then
 				game = rogue
-			elseif menu_items[menu_selected] == "Diablolike" then
-				game = diablo
+				game.init()
 			end
-			game.init()
 		end
 	elseif state == "Game" then
 		if keycode == 65364 then
