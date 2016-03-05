@@ -10,7 +10,15 @@ function rogue.init()
 end
 
 function rogue.update()
-	map.player:handleinput()
+
+end
+
+function rogue.keydown(key)
+
+end
+
+function rogue.keyup(key)
+
 end
 
 function rogue.render()

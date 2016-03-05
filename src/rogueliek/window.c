@@ -209,19 +209,21 @@ bool updateWindow(lua_State *lua)
 			case CC_EVENT_WINDOW_QUIT:
 				return false;
 				break;
-			case CC_EVENT_KEY_DOWN:
+			case CC_EVENT_KEY_DOWN: {
 				if(event.keyCode == CC_KEY_ESCAPE){
 					return false;
 				}
 				lua_getglobal(lua, "keydown");
-				lua_pushinteger(lua, event.keyCode);
+				char *key = ccEventKeyToStr(event.keyCode);
+				lua_pushstring(lua, key);
 				lua_call(lua, 1, 0);
-				break;
-			case CC_EVENT_KEY_UP:
+				}	break;
+			case CC_EVENT_KEY_UP: {
 				lua_getglobal(lua, "keyup");
-				lua_pushinteger(lua, event.keyCode);
+				char *key = ccEventKeyToStr(event.keyCode);
+				lua_pushstring(lua, key);
 				lua_call(lua, 1, 0);
-				break;
+				}	break;
 			default: break;
 		}
 	}

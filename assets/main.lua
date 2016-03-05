@@ -28,22 +28,17 @@ function renderselectionmenu(width, height)
 	end
 end
 
-left_pressed = false
-right_pressed = false
-top_pressed = false
-bot_pressed = false
-
 function keydown(keycode)
 	if state == "Menu" then
-		if keycode == 65364 then
+		if keycode == "Down" then
 			if menu_selected < menu_len then
 				menu_selected = menu_selected + 1
 			end
-		elseif keycode == 65362 then
+		elseif keycode == "Up" then
 			if menu_selected > 1 then
 				menu_selected = menu_selected - 1
 			end
-		elseif keycode == 65293 then
+		elseif keycode == "Return" then
 			if menu_items[menu_selected] == "Play" then
 				state = "Game"
 				game = rogue
@@ -51,27 +46,13 @@ function keydown(keycode)
 			end
 		end
 	elseif state == "Game" then
-		if keycode == 65364 then
-			bot_pressed = true
-		elseif keycode == 65362 then
-			top_pressed = true
-		elseif keycode == 65363 then
-			right_pressed = true
-		elseif keycode == 65361 then
-			left_pressed = true
-		end
+		game.keydown(keycode)
 	end
 end
 
 function keyup(keycode)
-	if keycode == 65364 then
-		bot_pressed = false
-	elseif keycode == 65362 then
-		top_pressed = false
-	elseif keycode == 65363 then
-		right_pressed = false
-	elseif keycode == 65361 then
-		left_pressed = false
+	if state == "Game" then
+		game.keyup(keycode)
 	end
 end
 

@@ -8,7 +8,6 @@
 #include <ccore/time.h>
 
 #include "window.h"
-#include "level.h"
 #include "png.h"
 #include "utils.h"
 
@@ -29,7 +28,6 @@ void loadLua()
 	lua = luaL_newstate();
 	luaL_openlibs(lua);
 
-	levelRegisterLua(lua);
 	windowRegisterLua(lua);
 	pngRegisterLua(lua);
 
