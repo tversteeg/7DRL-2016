@@ -14,7 +14,18 @@ function rogue.update()
 end
 
 function rogue.keydown(key)
-
+	if key == "Up" then
+		map.player:move(0, -1)
+	end
+	if key == "Down" then
+		map.player:move(0, 1)
+	end
+	if key == "Left" then
+		map.player:move(-1, 0)
+	end
+	if key == "Right" then
+		map.player:move(1, 0)
+	end
 end
 
 function rogue.keyup(key)

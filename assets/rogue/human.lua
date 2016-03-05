@@ -8,6 +8,6 @@ function newStats() return {
 function newHuman(t) return {
 	stats = newStats();
 	tribe = t;
-	x = 0;
-	y = 0;
+	x = 1;
+	y = 1;
 } end

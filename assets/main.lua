@@ -61,16 +61,15 @@ function setup()
 end
 
 function update()
-	local width = getwidth()
-	if math.fmod(width, 2) == 1 then
-		width = width - 1
-	end
-	local height = getheight()
-	if math.fmod(height, 2) == 1 then
-		height = height - 1
-	end
-
 	if state == "Menu" then
+		local width = getwidth()
+		if math.fmod(width, 2) == 1 then
+			width = width - 1
+		end
+		local height = getheight()
+		if math.fmod(height, 2) == 1 then
+			height = height - 1
+		end
 		renderselectionmenu(width, height)
 	elseif state == "Game" then
 		game.update()

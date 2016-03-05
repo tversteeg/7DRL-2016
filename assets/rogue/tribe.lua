@@ -3,6 +3,8 @@ function newTribe() return {
 	humans = {};
 	humans_amount = 0;
 
+	relations = {};
+
 	addhuman = function(self)
 		self.humans_amount = self.humans_amount + 1
 		self.humans[self.humans_amount] = newHuman(self)
