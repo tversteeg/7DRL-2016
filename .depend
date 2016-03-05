@@ -1,0 +1,8 @@
+level.o: src/rogueliek/level.c src/rogueliek/level.h \
+ src/rogueliek/window.h
+png.o: src/rogueliek/png.c src/rogueliek/png.h
+utils.o: src/rogueliek/utils.c src/rogueliek/utils.h
+game.o: src/rogueliek/game.c src/rogueliek/window.h src/rogueliek/level.h \
+ src/rogueliek/png.h src/rogueliek/utils.h
+window.o: src/rogueliek/window.c src/rogueliek/window.h \
+ src/rogueliek/png.h src/rogueliek/utils.h
