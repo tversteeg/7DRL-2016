@@ -9,10 +9,6 @@
 #include <ccore/time.h>
 #include <ccore/file.h>
 
-#include <lua5.3/lua.h>
-#include <lua5.3/lauxlib.h>
-#include <lua5.3/lualib.h>
-
 #include "png.h"
 #include "utils.h"
 
@@ -38,90 +34,6 @@ static rchar_t *letters;
 static pixel_t *pixels;
 static int wwidth, wheight, lwidth, lheight;
 static bool updatescreen;
-
-static int l_drawString(lua_State *lua)
-{
-	int x = luaL_checkinteger(lua, 1);
-	int y = luaL_checkinteger(lua, 2);
-	const char *text = luaL_checkstring(lua, 3);
-	unsigned char r = luaL_checkinteger(lua, 4);
-	unsigned char g = luaL_checkinteger(lua, 5);
-	unsigned char b = luaL_checkinteger(lua, 6);
-	
-	drawString(x, y, text, r, g, b);
-
-	return 0;
-}
-
-static int l_drawChar(lua_State *lua)
-{
-	int x = luaL_checkinteger(lua, 1);
-	int y = luaL_checkinteger(lua, 2);
-	char c = luaL_checkinteger(lua, 3);
-	unsigned char r = luaL_checkinteger(lua, 4);
-	unsigned char g = luaL_checkinteger(lua, 5);
-	unsigned char b = luaL_checkinteger(lua, 6);
-	
-	drawChar(x, y, c, r, g, b);
-
-	return 0;
-}
-
-static int l_drawCharBack(lua_State *lua)
-{
-	int x = luaL_checkinteger(lua, 1);
-	int y = luaL_checkinteger(lua, 2);
-	unsigned char r = luaL_checkinteger(lua, 4);
-	unsigned char g = luaL_checkinteger(lua, 5);
-	unsigned char b = luaL_checkinteger(lua, 6);
-	
-	drawCharBack(x, y, r, g, b);
-
-	return 0;
-}
-
-static int l_drawPng(lua_State *lua)
-{
-	int id = luaL_checkinteger(lua, 1);
-	int x = luaL_checkinteger(lua, 2);
-	int y = luaL_checkinteger(lua, 3);
-	
-	drawPng(id, x, y);
-
-	return 0;
-}
-
-static int l_drawPngName(lua_State *lua)
-{
-	const char *name = luaL_checkstring(lua, 1);
-	int x = luaL_checkinteger(lua, 2);
-	int y = luaL_checkinteger(lua, 3);
-	
-	drawPngName(name, x, y);
-
-	return 0;
-}
-
-static int l_clear(lua_State *lua)
-{
-	clear();
-
-	return 0;
-}
-
-static int l_getWidth(lua_State *lua)
-{
-	lua_pushinteger(lua, getWidth());
-	
-	return 1;
-}
-
-static int l_getHeight(lua_State *lua)
-{
-	lua_pushinteger(lua, getHeight());
-	
-	return 1;
-}
 
 static void renderLetters()
 {
@@ -151,18 +63,6 @@ static void renderLetters()
 	}
 
 	updatescreen = false;
-}
-
-void windowRegisterLua(lua_State *lua)
-{
-	lua_register(lua, "drawstring", l_drawString);
-	lua_register(lua, "drawchar", l_drawChar);
-	lua_register(lua, "drawcharback", l_drawCharBack);
-	lua_register(lua, "drawpng", l_drawPng);
-	lua_register(lua, "drawpngname", l_drawPngName);
-	lua_register(lua, "clear", l_clear);
-	lua_register(lua, "getwidth", l_getWidth);
-	lua_register(lua, "getheight", l_getHeight);
 }
 
 void createWindow(const char *title, int width, int height)
@@ -201,7 +101,7 @@ void destroyWindow()
 	free(letters);
 }
 
-bool updateWindow(lua_State *lua)
+bool updateWindow()
 {
 	while(ccWindowEventPoll()){
 		ccEvent event = ccWindowEventGet();
@@ -213,16 +113,8 @@ bool updateWindow(lua_State *lua)
 				if(event.keyCode == CC_KEY_ESCAPE){
 					return false;
 				}
-				lua_getglobal(lua, "keydown");
-				char *key = ccEventKeyToStr(event.keyCode);
-				lua_pushstring(lua, key);
-				lua_call(lua, 1, 0);
 				}	break;
 			case CC_EVENT_KEY_UP: {
-				lua_getglobal(lua, "keyup");
-				char *key = ccEventKeyToStr(event.keyCode);
-				lua_pushstring(lua, key);
-				lua_call(lua, 1, 0);
 				}	break;
 			default: break;
 		}

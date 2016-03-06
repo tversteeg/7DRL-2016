@@ -21,42 +21,16 @@
 #define FRAME_DELTA (1.0 / 60.0)
 
 static char assetdir[256] = "./";
-static lua_State *lua;
-
-void loadLua()
-{
-	lua = luaL_newstate();
-	luaL_openlibs(lua);
-
-	windowRegisterLua(lua);
-	pngRegisterLua(lua);
-
-	char *file = findFileFromExtension(assetdir, "lua");
-	if(file == NULL){
-		fprintf(stderr, "Can not find any .lua files in the asset directory\n");
-		exit(1);
-	}
-
-	lua_pushstring(lua, assetdir);
-	lua_setglobal(lua, "assetdir");
-	if(luaL_loadfile(lua, file) || lua_pcall(lua, 0, 0, 0)){
-		fprintf(stderr, "Lua error: %s\n", lua_tostring(lua, -1));
-		exit(1);
-	}
-}
 
 void runGame()
 {
 	hideCursor();
 
-	lua_getglobal(lua, "setup");
-	lua_call(lua, 0, 0);
-
 	uint64_t curtime = ccTimeMilliseconds();
 	double acctime = 0.0;
 
 	while(true){
-		if(!updateWindow(lua)){
+		if(!updateWindow()){
 			break;
 		}
 
@@ -71,12 +45,10 @@ void runGame()
 
 		while(acctime >= FRAME_DELTA){
 			acctime -= FRAME_DELTA;
-			lua_getglobal(lua, "update");
-			lua_call(lua, 0, 0);
+			update();
 		}
 
-		lua_getglobal(lua, "render");
-		lua_call(lua, 0, 0);
+		render();
 		renderWindow(2);
 	}
 }
@@ -137,14 +109,12 @@ int main(int argc, char **argv)
 		fprintf(stderr, "Could not find a font!\n");
 		return 1;
 	}
-	loadLua();
+
 	createWindow("Ancestral Roots - " TOSTRING(ROGUELIEK_VERSION), DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	runGame();
 
 	showCursor();
 	destroyWindow();
-
-	lua_close(lua);
 
 	return 0;
 }

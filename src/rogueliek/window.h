@@ -2,16 +2,10 @@
 
 #include <stdbool.h>
 
-#include <lua5.3/lua.h>
-#include <lua5.3/lauxlib.h>
-#include <lua5.3/lualib.h>
-
-void windowRegisterLua(lua_State *lua);
-
 void createWindow(const char *title, int width, int height);
 void destroyWindow();
 
-bool updateWindow(lua_State *lua);
+bool updateWindow();
 void renderWindow(int ms);
 
 void hideCursor();

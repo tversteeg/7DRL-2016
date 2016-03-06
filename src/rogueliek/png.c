@@ -13,31 +13,6 @@ typedef struct {
 static _png_texture_t *pngs = NULL;
 static size_t npngs = 0;
 
-static int l_loadPng(lua_State *lua)
-{
-	const char *file = luaL_checkstring(lua, 1);
-	const char *name = luaL_checkstring(lua, 2);
-	
-	loadPng(file, name);
-
-	return 0;
-}
-
-static int l_getPngId(lua_State *lua)
-{
-	const char *name = luaL_checkstring(lua, 1);
-
-	lua_pushinteger(lua, getPngId(name));
-
-	return 1;
-}
-
-void pngRegisterLua(lua_State *lua)
-{
-	lua_register(lua, "loadpng", l_loadPng);
-	lua_register(lua, "getpngid", l_getPngId);
-}
-
 static int getSizePng(const char *file, unsigned int *width, unsigned int *height)
 {
 	FILE *fp = fopen(file, "rb");
