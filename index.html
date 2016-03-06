@@ -36,36 +36,48 @@
         <span class="blc"></span><span class="trc"></span>
         </div>
         <article class="markdown-body">
-          <h3>
-<a id="ancestral-roots" class="anchor" href="#ancestral-roots" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Ancestral Roots</h3>
+          <h1>
+<a id="ancestral-roots" class="anchor" href="#ancestral-roots" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Ancestral Roots</h1>
 
 <p>This is the first time I'm making a game for the 7 day roguelike challenge. I will try to document all the big design decisions I have made and I hope I will be able to finish the game. I am currently traveling in Laos so I won't be able to spend too much time on it every day. I will start at 12:00 local time on Saturday the fifth, and hopefully have a finished game after exactly 168 hours.</p>
 
-<h3>
-<a id="about-the-game" class="anchor" href="#about-the-game" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>About the game</h3>
+<h1>
+<a id="about-the-game" class="anchor" href="#about-the-game" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>About the game</h1>
 
 <p>You will play as a proud warrior of a tribe somewhere in the bronze age, you are the descendant of a long lineage of warriors. You ancestors have fought with other tribes for generations, so the relationships between your tribe and other tribes might not be all peacelike and friendly.</p>
 
 <h2>
 <a id="mechanics" class="anchor" href="#mechanics" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Mechanics</h2>
 
-<h1>
-<a id="dying" class="anchor" href="#dying" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Dying</h1>
+<h3>
+<a id="dying" class="anchor" href="#dying" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Dying</h3>
 
 <p>When you die you will respawn as a direct descendant of your previous character. Some of the skills you have will be persistent, and the relationships between the different tribes will also be persistent. What's non persistent is the world.</p>
 
-<h1>
-<a id="relationships-between-tribes" class="anchor" href="#relationships-between-tribes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Relationships between tribes</h1>
+<h3>
+<a id="relationships-between-tribes" class="anchor" href="#relationships-between-tribes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Relationships between tribes</h3>
 
 <p>The relationships between tribes are a scale from positive (allies) to negative (enemies), when you kill a member of a tribe the scale of that tribe and the allied tribes will go down a bit, and the scale of the enemy tribes will go up.</p>
 
-<h3>
-<a id="day-1" class="anchor" href="#day-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Day 1</h3>
+<h1>
+<a id="day-1" class="anchor" href="#day-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Day 1</h1>
 
 <h2>
 <a id="implementation-details" class="anchor" href="#implementation-details" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Implementation details</h2>
 
 <p>The game will be written in C and Lua-5.3, I will use the <a href="http://github.com/ccore/ccore">ccore</a> library to use the OpenGL interface and input handling.</p>
+
+<h2>
+<a id="status" class="anchor" href="#status" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Status</h2>
+
+<p>I implemented some very rudimentary "class" system, where there are multiple tribes each with a list of humans, the player itself is a "subclass" of a human. Humans themselves have a stats object. (I put "classes" in quotes because Lua doesn't support any real OOP-like classes). </p>
+
+<h2>
+<a id="story-time" class="anchor" href="#story-time" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Story time</h2>
+
+<p>I haven't spend as much time as I would like to have spend, but my first day was a really chaotic one for me. I am staying at a hostel in Vientiane (Laos), and I was planning on going out for dinner with my motorbike. When I drove my motorbike of the property where I was staying there was a guy with a broken foot talking to a tuktuk driver, I have talked to him before but I didn't really know why his foot was broken. I offered him a ride on the back of my motorbike, and he asked me to drive past a group of "friends" in the alley just 20 meters from where I was standing; I thought he just wanted to say hello so I drove past them with him. They stared at us strangely but I didn't really think much of it. He asked me to turn around and drive back past them, when I did this they made some symbol on the road with a stick and a leaf; I stopped to watch what they were doing but the American guy urged me to go on. I dropped him of at the hostel and went for dinner.</p>
+
+<p>When I got back I talked to him, and he explained me that these guys were not his friends but are part of some gang he had a fight with, he told me that he started the fight because a tuktuk driver tried to rip him of. According to him they tried to bash his head in with a boulder, broke his foot, climbed into his hotel (the previous one) to fight him and flash a machine gun at him to scare him. Needless to say I was pretty scared after that because I just drove past the gang with him on the back of my motorbike, stopped in front of them and turned around. I hope they don't associate me with him and to be sure I won't leave the hostel today.. After that I couldn't really bring myself back to continue programming. I hope day 2 will be a better day.</p>
         </article>
       </div>
     </div>
