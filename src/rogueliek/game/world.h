@@ -2,4 +2,4 @@
 
 void initWorld();
 void updateWorld();
-void renderWorld();
+void renderWorld(int vx, int vy, int vwidth, int vheight);
