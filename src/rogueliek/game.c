@@ -10,6 +10,7 @@
 #include "window.h"
 #include "png.h"
 #include "utils.h"
+#include "game/world.h"
 
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
@@ -26,7 +27,9 @@ void runGame()
 {
 	hideCursor();
 
-	uint64_t curtime = ccTimeMilliseconds();
+	initWorld();
+
+	unsigned long curtime = ccTimeMilliseconds();
 	double acctime = 0.0;
 
 	while(true){
@@ -34,7 +37,7 @@ void runGame()
 			break;
 		}
 
-		uint64_t newtime = ccTimeMilliseconds();
+		unsigned long newtime = ccTimeMilliseconds();
 		double frametime = (newtime - curtime) * 0.001;
 		curtime = newtime;
 
@@ -45,10 +48,10 @@ void runGame()
 
 		while(acctime >= FRAME_DELTA){
 			acctime -= FRAME_DELTA;
-			update();
+			updateWorld();
 		}
 
-		render();
+		renderWorld();
 		renderWindow(2);
 	}
 }
