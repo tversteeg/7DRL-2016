@@ -1,21 +1,14 @@
 require(assetdir .. "rogue/human")
 
-function newPlayer(t, m) return {
+function newPlayer(t) return {
 	_ = newHuman(t);
-	map = m;
+
+	render = function(self)
+		drawchar(self._.x, self._.y, string.byte("@"), 255, 255, 255)
+	end;
 
 	move = function(self, x, y)
-		newx = self._.x + x
-		newy = self._.y + y
-
-		if newx < 1 or newy < 1 then
-			return false
-		end
-
-		self._.x = newx
-		self._.y = newy
-
-		return true
+		self._:move(x, y)
 	end;
 
 	getx = function(self)

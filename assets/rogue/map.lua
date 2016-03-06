@@ -2,7 +2,7 @@ require(assetdir .. "rogue/tribe")
 require(assetdir .. "rogue/human")
 require(assetdir .. "rogue/player")
 
-NUM_TRIBES = 3
+NUM_TRIBES = 10
 NUM_HUMANS_PER_TRIBE = 10
 
 ROOM_MAX_SIZE = 5
@@ -81,7 +81,14 @@ function createroomcluster(x, y, rooms)
 	end
 end
 
-function map.create(width, height, rooms)	map.width = width
+function map.endturn()
+	for i = 1, NUM_TRIBES do
+		map.tribes[i]:endturn()
+	end
+end
+
+function map.create(width, height, rooms)	
+	map.width = width
 	map.height = height
 
 	for y = 1, map.height do
@@ -94,12 +101,22 @@ function map.create(width, height, rooms)	map.width = width
 	createroomcluster(math.floor(map.width / 2), math.floor(map.height / 2), rooms)
 
 	for i = 1, NUM_TRIBES do
-		tribe = newTribe()
+		tribe = newTribe(map)
 		for j = 1, NUM_HUMANS_PER_TRIBE do
-			tribe:addhuman()
+			human = tribe:addhuman()
+			human.x = (i / NUM_TRIBES) * map.width
+			human.y = j * 2
 		end
 
 		map.tribes[i] = tribe
+	end
+
+	for i = 1, NUM_TRIBES do
+		for j = 1, NUM_TRIBES do
+			if i ~= j then
+				map.tribes[i].relations[j] = 0
+			end
+		end
 	end
 
 	map.player = newPlayer(map.tribes[1], map)
@@ -132,7 +149,11 @@ function map.render(xpos, ypos)
 		end
 	end
 
-	drawchar(map.player:getx(), map.player:gety(), string.byte("@"), 64, 255, 64)
+	for i = 1, NUM_TRIBES do
+		map.tribes[i]:render()
+	end
+
+	map.player:render()
 end
 
 return map
