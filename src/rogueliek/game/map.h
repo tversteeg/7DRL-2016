@@ -2,6 +2,8 @@
 
 #include "char.h"
 
+#define NPCS_PER_TILE 0.01
+
 typedef enum {
 	TILE_GRASS,
 	TILE_TREE,
@@ -16,6 +18,9 @@ typedef struct {
 typedef struct {
 	int width, height;
 	tile_t *t;
+
+	int nc;
+	char_t *c;
 } map_t;
 
 map_t generateMap(int width, int height);

@@ -1,15 +1,44 @@
 #include "map.h"
 
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
+#define JC_VORONOI_IMPLEMENTATION
+#include <jc/jc_voronoi.h>
+
+static void relaxChars(map_t *m)
+{
+	
+}
 
 map_t generateMap(int width, int height)
 {
-	map_t map = {.width = width, .height = height};
-	map.t = (tile_t*)calloc(width * height, sizeof(tile_t));
+	int nt = width * height;
 
-	for(int i = 0; i < width * height; i++){
+	map_t map = {.width = width, .height = height};
+	map.t = (tile_t*)calloc(nt, sizeof(tile_t));
+
+	for(int i = 0; i < nt; i++){
 		map.t[i].c = NULL;
 	}
+
+	map.nc = nt * NPCS_PER_TILE;
+	map.c = (char_t*)calloc(map.nc, sizeof(char_t));
+
+	for(int i = 0; i < map.nc; i++){
+		char_t *c = map.c + i;
+		int ind = rand() % nt;
+		c->x = ind % map.width;
+		c->y = ind / map.width;
+		c->type = CHAR_WARRIOR;
+
+		moveCharMap(&map, c);
+	}
+
+	map.c[0].type = CHAR_PLAYER;
+
+	relaxChars(&map);
 
 	return map;
 }

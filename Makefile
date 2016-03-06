@@ -6,7 +6,7 @@ SOURCEDIR=src/$(NAME)
 BINDIR=bin
 
 RM=rm -f
-CFLAGS=-g -Wall -D_DEBUG -DCC_USE_ALL
+CFLAGS=-Iinclude/ -g -Wall -D_DEBUG -DCC_USE_ALL
 LDLIBS=-lccFont -lccNoise -lccRandom -lccTrigonometry -lccore -lGL -lGLU -lGLEW -lm -lX11 -lXrandr -lXinerama -lXi -lpthread -lpng
 
 UCNAME=$(shell echo $(NAME) | tr a-z A-Z)
