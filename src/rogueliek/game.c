@@ -51,7 +51,7 @@ void runGame()
 			updateWorld();
 		}
 
-		renderWorld(2, 2, getWidth() - 6, getHeight() - 6);
+		renderWorld(2, 2, getWidth() - 8, getHeight() - 8);
 		renderWindow(2);
 	}
 }
