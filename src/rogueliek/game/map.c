@@ -7,9 +7,45 @@
 #define JC_VORONOI_IMPLEMENTATION
 #include <jc/jc_voronoi.h>
 
-static void relaxChars(map_t *m)
+static void relaxChars(map_t *m, int iters)
 {
-	
+	jcv_diagram diagram = {0};
+
+	jcv_point *points = (jcv_point*)malloc(m->nc * sizeof(jcv_point));
+	for(int i = 0; i < m->nc; i++){
+		points[i].x = m->c[i].x;
+		points[i].y = m->c[i].y;
+	}
+
+	for(int c = 0; c < iters; c++){
+		jcv_diagram_generate(m->nc, points, m->width, m->height, &diagram);
+		const jcv_site* sites = jcv_diagram_get_sites(&diagram);
+		for(int i = 0; i < diagram.numsites; i++){
+			const jcv_site* site = &sites[i];
+			jcv_point sum = site->p;
+			int count = 1;
+
+			const jcv_graphedge* edge = site->edges;
+			while(edge){
+				sum.x += edge->pos[0].x;
+				sum.y += edge->pos[0].y;
+				++count;
+				edge = edge->next;
+			}
+
+			points[site->index].x = sum.x / count;
+			points[site->index].y = sum.y / count;
+		}
+	}
+
+	for(int i = 0; i < m->nc; i++){
+		m->c[i].x = points[i].x;
+		m->c[i].y = points[i].y;
+	}
+
+	free(points);
+
+	jcv_diagram_free(&diagram);
 }
 
 map_t generateMap(int width, int height)
@@ -38,7 +74,7 @@ map_t generateMap(int width, int height)
 
 	map.c[0].type = CHAR_PLAYER;
 
-	relaxChars(&map);
+	relaxChars(&map, 6);
 
 	return map;
 }
