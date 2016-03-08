@@ -38,6 +38,10 @@ void runGame()
 		ccEvent event = updateWindow();
 		if(event.type == CC_EVENT_WINDOW_QUIT){
 			break;
+		}else if(event.type == CC_EVENT_KEY_DOWN){
+			handleKeyDownWorld(event.keyCode);
+		}else if(event.type == CC_EVENT_KEY_UP){
+			handleKeyUpWorld(event.keyCode);
 		}
 
 		unsigned long newtime = ccTimeMilliseconds();

@@ -53,6 +53,9 @@ void moveCharMap(map_t *m, char_t *c)
 	}
 
 	tile_t *t = &m->t[c->x + c->y * m->width];
+	if(c->tile != NULL){
+		((tile_t*)c->tile)->c = NULL;
+	}
 	c->tile = t;
 	t->c = c;
 }
