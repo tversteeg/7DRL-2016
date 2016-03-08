@@ -4,50 +4,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#define JC_VORONOI_IMPLEMENTATION
-#include <jc/jc_voronoi.h>
-
-static void relaxChars(map_t *m, int iters)
-{
-	jcv_diagram diagram = {0};
-
-	jcv_point *points = (jcv_point*)malloc(m->nc * sizeof(jcv_point));
-	for(int i = 0; i < m->nc; i++){
-		points[i].x = m->c[i].x;
-		points[i].y = m->c[i].y;
-	}
-
-	for(int c = 0; c < iters; c++){
-		jcv_diagram_generate(m->nc, points, m->width, m->height, &diagram);
-		const jcv_site* sites = jcv_diagram_get_sites(&diagram);
-		for(int i = 0; i < diagram.numsites; i++){
-			const jcv_site* site = &sites[i];
-			jcv_point sum = site->p;
-			int count = 1;
-
-			const jcv_graphedge* edge = site->edges;
-			while(edge){
-				sum.x += edge->pos[0].x;
-				sum.y += edge->pos[0].y;
-				++count;
-				edge = edge->next;
-			}
-
-			points[site->index].x = sum.x / count;
-			points[site->index].y = sum.y / count;
-		}
-	}
-
-	for(int i = 0; i < m->nc; i++){
-		m->c[i].x = points[i].x;
-		m->c[i].y = points[i].y;
-	}
-
-	free(points);
-
-	jcv_diagram_free(&diagram);
-}
-
 map_t generateMap(int width, int height)
 {
 	int nt = width * height;
@@ -67,14 +23,25 @@ map_t generateMap(int width, int height)
 		int ind = rand() % nt;
 		c->x = ind % map.width;
 		c->y = ind / map.width;
+		while(getCharMap(&map, c->x, c->y) != NULL){
+			c->x++;
+			if(c->x >= map.width){
+				c->x = 0;
+				c->y++;
+				if(c->y >= map.height){
+					c->y = 0;
+				}
+			}
+		}
+
 		c->type = CHAR_WARRIOR;
+		setDefaultStats(c);
 
 		moveCharMap(&map, c);
 	}
 
 	map.c[0].type = CHAR_PLAYER;
-
-	relaxChars(&map, 6);
+	setDefaultStats(map.c);
 
 	return map;
 }
@@ -88,6 +55,17 @@ void moveCharMap(map_t *m, char_t *c)
 	tile_t *t = &m->t[c->x + c->y * m->width];
 	c->tile = t;
 	t->c = c;
+}
+
+char_t *getCharMap(map_t *m, int x, int y)
+{
+	if(x < 0 || y < 0 || x >= m->width || y >= m->height){
+		return NULL;
+	}
+
+	tile_t *t = &m->t[x + y * m->width];
+
+	return t->c;
 }
 
 tile_t *getTile(const map_t *m, int x, int y)

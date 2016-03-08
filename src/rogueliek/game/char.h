@@ -16,3 +16,4 @@ typedef struct {
 } char_t;
 
 char getCharFromChar(const char_t *c);
+void setDefaultStats(char_t *c);

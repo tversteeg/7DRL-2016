@@ -11,11 +11,12 @@
 #include "png.h"
 #include "utils.h"
 #include "game/world.h"
+#include "game/gui.h"
 
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
 
-#define DEFAULT_WIDTH 800
+#define DEFAULT_WIDTH 1024
 #define DEFAULT_HEIGHT 600
 
 #define FRAME_CAP 0.25
@@ -51,7 +52,8 @@ void runGame()
 			updateWorld();
 		}
 
-		renderWorld(2, 2, getWidth() - 8, getHeight() - 8);
+		renderWorld(2, 1, getWidth() - getGuiWidth() - 3, getHeight() - 8);
+		renderGui(getWidth() - getGuiWidth(), 0);
 		renderWindow(2);
 	}
 }

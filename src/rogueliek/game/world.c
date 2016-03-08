@@ -35,3 +35,8 @@ void renderWorld(int vx, int vy, int vwidth, int vheight)
 		}
 	}
 }
+
+char_t *getPlayer()
+{
+	return &map.c[0];
+}
