@@ -1,6 +1,7 @@
 #include "window.h"
 
 #include <stdbool.h>
+#include <stdio.h>
 
 #include <ccFont/ccFont.h>
 #include <ccore/display.h>
@@ -101,26 +102,37 @@ void destroyWindow()
 	free(letters);
 }
 
-bool updateWindow()
+ccEvent updateWindow()
 {
+	ccEvent event;
+
 	while(ccWindowEventPoll()){
-		ccEvent event = ccWindowEventGet();
+		event = ccWindowEventGet();
 		switch(event.type){
-			case CC_EVENT_WINDOW_QUIT:
-				return false;
-				break;
-			case CC_EVENT_KEY_DOWN: {
+			case CC_EVENT_KEY_UP:
 				if(event.keyCode == CC_KEY_ESCAPE){
-					return false;
+					event.type = CC_EVENT_WINDOW_QUIT;
 				}
-				}	break;
-			case CC_EVENT_KEY_UP: {
-				}	break;
-			default: break;
+				break;
+			case CC_EVENT_WINDOW_RESIZE: {
+				ccRect r = ccWindowGetRect();
+				wwidth = r.width;
+				wheight = r.height;
+				free(pixels);
+				pixels = (pixel_t*)calloc(wwidth * wheight, sizeof(pixel_t));
+
+				lwidth = wwidth / font.gwidth;
+				lheight = wheight / font.gheight;
+				free(letters);
+				letters = (rchar_t*)calloc(lwidth * lheight, sizeof(rchar_t));
+				updatescreen = true;
+				} break;
+			default:
+				break;
 		}
 	}
 
-	return true;
+	return event;
 }
 
 void renderWindow(int ms)

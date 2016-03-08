@@ -2,10 +2,12 @@
 
 #include <stdbool.h>
 
+#include <ccore/event.h>
+
 void createWindow(const char *title, int width, int height);
 void destroyWindow();
 
-bool updateWindow();
+ccEvent updateWindow();
 void renderWindow(int ms);
 
 void hideCursor();

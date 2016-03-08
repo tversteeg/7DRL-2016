@@ -6,6 +6,7 @@
 
 #include <ccore/file.h>
 #include <ccore/time.h>
+#include <ccore/event.h>
 
 #include "window.h"
 #include "png.h"
@@ -34,7 +35,8 @@ void runGame()
 	double acctime = 0.0;
 
 	while(true){
-		if(!updateWindow()){
+		ccEvent event = updateWindow();
+		if(event.type == CC_EVENT_WINDOW_QUIT){
 			break;
 		}
 

@@ -28,7 +28,10 @@ void renderWorld(int vx, int vy, int vwidth, int vheight)
 {
 	for(int x = 0; x < vwidth; x++){
 		for(int y = 0; y < vheight; y++){
-			tile_t *t = getTile(&map, x, y);
+			const char_t *p = getPlayer();
+			int rx = p->x + x - vwidth / 2;
+			int ry = p->y + y - vheight / 2;
+			tile_t *t = getTile(&map, rx, ry);
 			char c = getCharFromTile(t);
 
 			drawChar(x + vx, y + vy, c, 255, 255, 255);
