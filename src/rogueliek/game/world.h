@@ -12,3 +12,4 @@ void handleKeyDownWorld(int keycode);
 void handleKeyUpWorld(int keycode);
 
 char_t *getPlayer();
+char_t *getNearestEnemy(int *distance);

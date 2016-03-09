@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 #include <time.h>
-#include <stdlib.h>
+#include <math.h>
 
 #include <ccore/event.h>
 
@@ -11,18 +11,23 @@
 
 map_t map;
 
-int nchars;
-char_t *chars;
 bool redraw;
+char_t *nearest;
+
+static void endTurn()
+{
+	redraw = true;
+	nearest = NULL;
+}
 
 static void movePlayer(int x, int y)
 {
 	char_t *p = getPlayer();
-	p->x += x;
-	p->y += y;
-	moveCharMap(&map, p);
+	if(moveCharMap(&map, p, p->x + x, p->y + y) == TILE_ENEMY){
+		// Attack enemy
+	}
 
-	redraw = true;
+	endTurn();
 }
 
 void initWorld()
@@ -87,5 +92,27 @@ void handleKeyUpWorld(int keycode)
 
 char_t *getPlayer()
 {
-	return &map.c[0];
+	return map.c;
+}
+
+char_t *getNearestEnemy(int *distance)
+{
+	if(nearest != NULL){
+		return nearest;
+	}
+
+	*distance = 1000;
+	for(int i = 1; i < map.nc; i++){
+		char_t *e = map.c + i;
+		
+		int dx = e->x - getPlayer()->x;
+		int dy = e->y - getPlayer()->y;
+		int dis = sqrt(dx * dx + dy * dy);
+		if(dis < *distance){
+			nearest = e;
+			*distance = dis;
+		}
+	}
+
+	return nearest;
 }

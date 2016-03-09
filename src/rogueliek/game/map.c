@@ -37,7 +37,7 @@ map_t generateMap(int width, int height)
 		c->type = CHAR_WARRIOR;
 		setDefaultStats(c);
 
-		moveCharMap(&map, c);
+		moveCharMap(&map, c, c->x, c->y);
 	}
 
 	map.c[0].type = CHAR_PLAYER;
@@ -46,18 +46,26 @@ map_t generateMap(int width, int height)
 	return map;
 }
 
-void moveCharMap(map_t *m, char_t *c)
+movereturn_t moveCharMap(map_t *m, char_t *c, int x, int y)
 {
-	if(c->x < 0 || c->y < 0 || c->x >= m->width || c->y >= m->height){
-		return;
+	if(x < 0 || y < 0 || x >= m->width || y >= m->height){
+		return TILE_OOB;
 	}
 
-	tile_t *t = &m->t[c->x + c->y * m->width];
+	tile_t *t = &m->t[x + y * m->width];
+	if(t->c != NULL){
+		return TILE_ENEMY;
+	}
+
 	if(c->tile != NULL){
 		((tile_t*)c->tile)->c = NULL;
 	}
-	c->tile = t;
 	t->c = c;
+	c->tile = t;
+	c->x = x;
+	c->y = y;
+
+	return TILE_REACHED;
 }
 
 char_t *getCharMap(map_t *m, int x, int y)

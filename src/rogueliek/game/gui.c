@@ -29,4 +29,9 @@ void renderGui(int x, int y)
 
 	sprintf(buf, "LIF:%d/%d", p->stats.health, p->stats.max_health);
 	drawString(x, y + 3, buf, 255, 255, 255);
+
+	int dis;
+	const char_t *e = getNearestEnemy(&dis);
+	sprintf(buf, "Enemy:%s", getNameFromChar(e));
+	drawString(x, y + 6, buf, 255, 255, 255);
 }

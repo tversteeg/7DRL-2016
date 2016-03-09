@@ -25,7 +25,12 @@ typedef struct {
 
 map_t generateMap(int width, int height);
 
-void moveCharMap(map_t *m, char_t *c);
+typedef enum {
+	TILE_OOB,
+	TILE_ENEMY,
+	TILE_REACHED
+} movereturn_t;
+movereturn_t moveCharMap(map_t *m, char_t *c, int x, int y);
 char_t *getCharMap(map_t *m, int x, int y);
 
 tile_t *getTile(const map_t *m, int x, int y);
