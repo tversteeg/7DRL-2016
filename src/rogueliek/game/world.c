@@ -135,7 +135,7 @@ void renderWorld(int vx, int vy, int vwidth, int vheight)
 	const char_t *p = getPlayer();
 	int dmgcol = 255;
 	if(p->stats.health < p->stats.max_health / 2){
-		dmgcol = p->stats.health / ((float)p->stats.max_health) * 127;
+		dmgcol = p->stats.health / ((float)p->stats.max_health) * 512;
 	}
 
 	int dis;
