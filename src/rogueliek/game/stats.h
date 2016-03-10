@@ -6,4 +6,5 @@ typedef struct {
 	int max_health;
 	int health;
 	int xp;
+	int level;
 } stats_t;

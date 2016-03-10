@@ -65,8 +65,8 @@ void setDefaultStats(char_t *c)
 	stats_t stats = {0};
 
 	switch(c->type){
-		SWITCH_CHAR(CHAR_PLAYER, 2, 2, 100, 0)
-		SWITCH_CHAR(CHAR_WARRIOR, 10, 10, 10, 5)
+		SWITCH_CHAR(CHAR_PLAYER, 2, 2, 20, 0)
+		SWITCH_CHAR(CHAR_WARRIOR, 3, 10, 10, 5)
 		SWITCH_CHAR(CHAR_ARCHER, 10, 0, 4, 5)
 		SWITCH_CHAR(CHAR_SORCERER, 10, 0, 3, 8)
 		SWITCH_CHAR(CHAR_SKELETON, 3, 5, 15, 10)
@@ -75,6 +75,7 @@ void setDefaultStats(char_t *c)
 	}
 
 	stats.health = stats.max_health;
+	stats.level = 1;
 
 	c->stats = stats;
 }

@@ -19,13 +19,16 @@ char_t *nearest;
 
 static void die()
 {
-
+	popupText("");
+	popupText("");
+	popupText("");
+	popupText("You got killed!");
 }
 
 static void endTurn()
 {
 	// Regain some life
-	if(turn % 2 == 0 && getPlayer()->stats.health < getPlayer()->stats.max_health){
+	if(turn % 5 == 0 && getPlayer()->stats.health < getPlayer()->stats.max_health){
 		getPlayer()->stats.health++;
 	}
 
@@ -55,6 +58,8 @@ static void fight(char_t *c)
 	}
 
 	damage = getDamage(c);
+	sprintf(buf, "You take %d damage", damage);
+	popupText(buf);
 	if(!doDamage(getPlayer(), damage)){
 		die();
 	}
@@ -63,6 +68,10 @@ static void fight(char_t *c)
 static void movePlayer(int x, int y)
 {
 	char_t *p = getPlayer();
+	if(p->stats.health <= 0){
+		return;
+	}
+
 	if(moveCharMap(&map, p, p->x + x, p->y + y) == TILE_ENEMY){
 		tile_t *t = getTile(&map, p->x + x, p->y + y);
 
@@ -98,15 +107,17 @@ void renderWorld(int vx, int vy, int vwidth, int vheight)
 
 	clear();
 
+	const char_t *p = getPlayer();
+	int dmgcol = p->stats.health / ((float)p->stats.max_health) * 255;
+
 	for(int x = 0; x < vwidth; x++){
 		for(int y = 0; y < vheight; y++){
-			const char_t *p = getPlayer();
 			int rx = p->x + x - vwidth / 2;
 			int ry = p->y + y - vheight / 2;
 			tile_t *t = getTile(&map, rx, ry);
 			char c = getCharFromTile(t);
 
-			drawChar(x + vx, y + vy, c, 255, 255, 255);
+			drawChar(x + vx, y + vy, c, 255, dmgcol, dmgcol);
 		}
 	}
 
