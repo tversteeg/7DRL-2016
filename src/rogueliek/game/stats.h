@@ -5,4 +5,5 @@ typedef struct {
 	int defence;
 	int max_health;
 	int health;
+	int xp;
 } stats_t;

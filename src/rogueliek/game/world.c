@@ -1,5 +1,6 @@
 #include "world.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
@@ -7,24 +8,67 @@
 #include <ccore/event.h>
 
 #include "map.h"
+#include "gui.h"
 #include "../window.h"
 
 map_t map;
 
+int turn;
 bool redraw;
 char_t *nearest;
 
+static void die()
+{
+
+}
+
 static void endTurn()
 {
+	// Regain some life
+	if(turn % 2 == 0 && getPlayer()->stats.health < getPlayer()->stats.max_health){
+		getPlayer()->stats.health++;
+	}
+
 	redraw = true;
 	nearest = NULL;
+
+	turn++;
+}
+
+static void fight(char_t *c)
+{
+	// Always hit the enemy first
+	int damage = getDamage(getPlayer());
+
+	char buf[50];
+	if(!doDamage(c, damage)){
+		getPlayer()->stats.xp += c->stats.xp;
+		removeCharMap(&map, c);
+
+		sprintf(buf, "You killed \"%s\"", getNameFromChar(c));
+		popupText(buf);
+
+		return;
+	}else{
+		sprintf(buf, "You deal %d damage", damage);
+		popupText(buf);
+	}
+
+	damage = getDamage(c);
+	if(!doDamage(getPlayer(), damage)){
+		die();
+	}
 }
 
 static void movePlayer(int x, int y)
 {
 	char_t *p = getPlayer();
 	if(moveCharMap(&map, p, p->x + x, p->y + y) == TILE_ENEMY){
-		// Attack enemy
+		tile_t *t = getTile(&map, p->x + x, p->y + y);
+
+		fight(t->c);
+	}else{
+		popupText("");
 	}
 
 	endTurn();
@@ -37,11 +81,13 @@ void initWorld()
 	map = generateMap(MAP_WIDTH, MAP_HEIGHT);
 
 	redraw = true;
+	turn = 0;
+	nearest = NULL;
 }
 
-void updateWorld()
+bool updateWorld()
 {
-
+	return redraw;
 }
 
 void renderWorld(int vx, int vy, int vwidth, int vheight)
@@ -104,6 +150,9 @@ char_t *getNearestEnemy(int *distance)
 	*distance = 1000;
 	for(int i = 1; i < map.nc; i++){
 		char_t *e = map.c + i;
+		if(e->stats.health <= 0){
+			continue;
+		}
 		
 		int dx = e->x - getPlayer()->x;
 		int dy = e->y - getPlayer()->y;

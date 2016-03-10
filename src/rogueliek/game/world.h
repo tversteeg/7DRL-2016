@@ -6,7 +6,7 @@
 #define MAP_HEIGHT 1024
 
 void initWorld();
-void updateWorld();
+bool updateWorld();
 void renderWorld(int vx, int vy, int vwidth, int vheight);
 void handleKeyDownWorld(int keycode);
 void handleKeyUpWorld(int keycode);

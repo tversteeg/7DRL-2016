@@ -32,6 +32,7 @@ typedef enum {
 } movereturn_t;
 movereturn_t moveCharMap(map_t *m, char_t *c, int x, int y);
 char_t *getCharMap(map_t *m, int x, int y);
+void removeCharMap(map_t *m, char_t *c);
 
 tile_t *getTile(const map_t *m, int x, int y);
 char getCharFromTile(const tile_t *t);

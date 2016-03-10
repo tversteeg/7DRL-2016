@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdbool.h>
+
 #include "stats.h"
 
 typedef enum {
@@ -21,5 +23,8 @@ typedef struct {
 
 char getCharFromChar(const char_t *c);
 const char *getNameFromChar(const char_t *c);
+
+int getDamage(const char_t *c);
+bool doDamage(char_t *c, int damage);
 
 void setDefaultStats(char_t *c);

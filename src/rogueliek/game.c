@@ -53,14 +53,18 @@ void runGame()
 		}
 		acctime += frametime;
 
+		bool redraw = false;
 		while(acctime >= FRAME_DELTA){
 			acctime -= FRAME_DELTA;
-			updateWorld();
+			redraw = updateWorld();
 		}
 
-		renderWorld(2, 1, getWidth() - getGuiWidth() - 3, getHeight() - 8);
-		renderGui(getWidth() - getGuiWidth(), 0);
+		if(redraw){
+			renderWorld(2, 1, getWidth() - getGuiWidth() - 3, getHeight() - 8);
+			renderGui(getWidth() - getGuiWidth(), 0);
+		}
 		renderWindow(2);
+		
 	}
 }
 

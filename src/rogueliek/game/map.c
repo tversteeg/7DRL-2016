@@ -68,6 +68,14 @@ movereturn_t moveCharMap(map_t *m, char_t *c, int x, int y)
 	return TILE_REACHED;
 }
 
+void removeCharMap(map_t *m, char_t *c)
+{
+	if(c->tile != NULL){
+		((tile_t*)c->tile)->c = NULL;
+	}
+	//TODO Remove from array
+}
+
 char_t *getCharMap(map_t *m, int x, int y)
 {
 	if(x < 0 || y < 0 || x >= m->width || y >= m->height){
