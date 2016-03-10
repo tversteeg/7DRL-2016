@@ -26,6 +26,14 @@ void renderGui(int x, int y)
 	int yp = y;
 
 	char buf[20];
+	sprintf(buf, "LVL:%d", p->stats.level);
+	drawString(x, ++yp, buf, 255, 255, 255);
+
+	sprintf(buf, "XP :%d", p->stats.xp);
+	drawString(x, ++yp, buf, 255, 255, 255);
+
+	yp++;
+
 	sprintf(buf, "HP :%d/%d", p->stats.health, p->stats.max_health);
 	drawString(x, ++yp, buf, 255, 255, 255);
 
@@ -34,9 +42,6 @@ void renderGui(int x, int y)
 	drawString(x, ++yp, buf, 255, 255, 255);
 
 	sprintf(buf, "DEF:%d", p->stats.defence);
-	drawString(x, ++yp, buf, 255, 255, 255);
-
-	sprintf(buf, "XP :%d", p->stats.xp);
 	drawString(x, ++yp, buf, 255, 255, 255);
 
 	int dis;

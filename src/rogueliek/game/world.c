@@ -16,6 +16,7 @@ map_t map;
 int turn;
 bool redraw;
 char_t *nearest;
+int ndis;
 
 static void die()
 {
@@ -28,7 +29,7 @@ static void die()
 static void endTurn()
 {
 	// Regain some life
-	if(turn % 5 == 0 && getPlayer()->stats.health < getPlayer()->stats.max_health){
+	if(turn % 10 == 0 && getPlayer()->stats.health < getPlayer()->stats.max_health){
 		getPlayer()->stats.health++;
 	}
 
@@ -38,10 +39,32 @@ static void endTurn()
 	turn++;
 }
 
+static void checkLevelUp()
+{
+	char buf[50];
+
+	int oldlvl = getPlayer()->stats.level;
+	int newlvl = getLevelForXP(getPlayer()->stats.xp);
+	while(++oldlvl <= newlvl){
+		sprintf(buf, "Level up: %d!", oldlvl);
+		popupText(buf);
+
+		if(newlvl % 2 == 0){
+			getPlayer()->stats.defence++;
+			getPlayer()->stats.strength++;
+		}
+
+		getPlayer()->stats.max_health += 2;
+		getPlayer()->stats.health += 2;
+	}
+
+	getPlayer()->stats.level = newlvl;
+}
+
 static void fight(char_t *c)
 {
 	// Always hit the enemy first
-	int damage = getDamage(getPlayer());
+	int damage = getDamage(getPlayer(), c);
 
 	char buf[50];
 	if(!doDamage(c, damage)){
@@ -51,16 +74,18 @@ static void fight(char_t *c)
 		sprintf(buf, "You killed \"%s\"", getNameFromChar(c));
 		popupText(buf);
 
+		checkLevelUp();
 		return;
 	}else{
 		sprintf(buf, "You deal %d damage", damage);
 		popupText(buf);
 	}
 
-	damage = getDamage(c);
+	damage = getDamage(c, getPlayer());
 	sprintf(buf, "You take %d damage", damage);
 	popupText(buf);
 	if(!doDamage(getPlayer(), damage)){
+		getPlayer()->stats.health = 0;
 		die();
 	}
 }
@@ -86,7 +111,7 @@ static void movePlayer(int x, int y)
 void initWorld()
 {
 	srand(time(NULL));
-	
+
 	map = generateMap(MAP_WIDTH, MAP_HEIGHT);
 
 	redraw = true;
@@ -108,7 +133,13 @@ void renderWorld(int vx, int vy, int vwidth, int vheight)
 	clear();
 
 	const char_t *p = getPlayer();
-	int dmgcol = p->stats.health / ((float)p->stats.max_health) * 255;
+	int dmgcol = 255;
+	if(p->stats.health < p->stats.max_health / 2){
+		dmgcol = p->stats.health / ((float)p->stats.max_health) * 127;
+	}
+
+	int dis;
+	const char_t *n = getNearestEnemy(&dis);
 
 	for(int x = 0; x < vwidth; x++){
 		for(int y = 0; y < vheight; y++){
@@ -117,7 +148,17 @@ void renderWorld(int vx, int vy, int vwidth, int vheight)
 			tile_t *t = getTile(&map, rx, ry);
 			char c = getCharFromTile(t);
 
-			drawChar(x + vx, y + vy, c, 255, dmgcol, dmgcol);
+			int nearestc = 1;
+			if(t->c == n){
+				nearestc = 0;
+			}
+			
+			if(p->stats.health <= 0){
+				drawCharBack(x + vx, y + vy, 64, 0, 0);
+				drawChar(x + vx, y + vy, c, 255, 0, 0);
+			}else{
+				drawChar(x + vx, y + vy, c, 255, dmgcol, dmgcol * nearestc);
+			}
 		}
 	}
 
@@ -155,6 +196,7 @@ char_t *getPlayer()
 char_t *getNearestEnemy(int *distance)
 {
 	if(nearest != NULL){
+		*distance = ndis;
 		return nearest;
 	}
 
@@ -164,7 +206,7 @@ char_t *getNearestEnemy(int *distance)
 		if(e->stats.health <= 0){
 			continue;
 		}
-		
+
 		int dx = e->x - getPlayer()->x;
 		int dy = e->y - getPlayer()->y;
 		int dis = sqrt(dx * dx + dy * dy);
@@ -173,6 +215,8 @@ char_t *getNearestEnemy(int *distance)
 			*distance = dis;
 		}
 	}
+
+	ndis = *distance;
 
 	return nearest;
 }

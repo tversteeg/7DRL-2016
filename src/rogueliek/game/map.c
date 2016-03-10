@@ -34,7 +34,7 @@ map_t generateMap(int width, int height)
 			}
 		}
 
-		c->type = CHAR_WARRIOR;
+		c->type = rand() % (CHAR_RAT - CHAR_WARRIOR + 1);
 		setDefaultStats(c);
 
 		moveCharMap(&map, c, c->x, c->y);

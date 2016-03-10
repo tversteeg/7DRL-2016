@@ -2,7 +2,7 @@
 
 #include "char.h"
 
-#define NPCS_PER_TILE 0.01
+#define NPCS_PER_TILE 0.02
 
 typedef enum {
 	TILE_GRASS,

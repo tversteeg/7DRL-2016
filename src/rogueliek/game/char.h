@@ -5,13 +5,13 @@
 #include "stats.h"
 
 typedef enum {
-	CHAR_PLAYER,
-	CHAR_WARRIOR,
+	CHAR_WARRIOR = 0,
 	CHAR_ARCHER,
 	CHAR_SORCERER,
 	CHAR_SKELETON,
 	CHAR_RAT,
-	CHAR_NPC
+	CHAR_NPC,
+	CHAR_PLAYER
 } chartype_t;
 
 typedef struct {
@@ -24,7 +24,9 @@ typedef struct {
 char getCharFromChar(const char_t *c);
 const char *getNameFromChar(const char_t *c);
 
-int getDamage(const char_t *c);
+int getDamage(const char_t *source, const char_t *target);
 bool doDamage(char_t *c, int damage);
+
+int getLevelForXP(int xp);
 
 void setDefaultStats(char_t *c);

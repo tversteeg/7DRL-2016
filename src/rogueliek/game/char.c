@@ -1,6 +1,7 @@
 #include "char.h"
 
 #include <stdlib.h>
+#include <math.h>
 
 #define SWITCH_CHAR(name, ret) \
 	case name: return ret; break;
@@ -37,10 +38,14 @@ const char *getNameFromChar(const char_t *c)
 
 #undef SWITCH_CHAR
 
-int getDamage(const char_t *c)
+int getDamage(const char_t *source, const char_t *target)
 {
-	int dmg = c->stats.strength / 2;
-	dmg += rand() % dmg;
+	int r = rand();
+
+	int dmg = (r % source->stats.strength) - target->stats.defence + 1;
+	if(dmg <= 0){
+		return 0;
+	}
 
 	return dmg;
 }
@@ -50,6 +55,11 @@ bool doDamage(char_t *c, int damage)
 	c->stats.health -= damage;
 
 	return c->stats.health > 0;
+}
+
+int getLevelForXP(int xp)
+{
+	return sqrt(xp) / 2 + 1;
 }
 
 #define SWITCH_CHAR(name, str, def, maxh, exp) \
@@ -65,12 +75,12 @@ void setDefaultStats(char_t *c)
 	stats_t stats = {0};
 
 	switch(c->type){
-		SWITCH_CHAR(CHAR_PLAYER, 2, 2, 20, 0)
-		SWITCH_CHAR(CHAR_WARRIOR, 3, 10, 10, 5)
-		SWITCH_CHAR(CHAR_ARCHER, 10, 0, 4, 5)
-		SWITCH_CHAR(CHAR_SORCERER, 10, 0, 3, 8)
-		SWITCH_CHAR(CHAR_SKELETON, 3, 5, 15, 10)
-		SWITCH_CHAR(CHAR_RAT, 1, 0, 2, 1)
+		SWITCH_CHAR(CHAR_PLAYER, 2, 0, 20, 0)
+		SWITCH_CHAR(CHAR_RAT, 5, 0, 5, 3)
+		SWITCH_CHAR(CHAR_WARRIOR, 3, 3, 10, 5)
+		SWITCH_CHAR(CHAR_ARCHER, 10, 0, 10, 10)
+		SWITCH_CHAR(CHAR_SORCERER, 10, 0, 3, 25)
+		SWITCH_CHAR(CHAR_SKELETON, 7, 4, 15, 100)
 		SWITCH_CHAR(CHAR_NPC, 0, 0, -1, 0)
 	}
 
