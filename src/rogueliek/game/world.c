@@ -97,7 +97,7 @@ static void movePlayer(int x, int y)
 		return;
 	}
 
-	if(moveCharMap(&map, p, p->x + x, p->y + y) == TILE_ENEMY){
+	if(moveCharMap(&map, p, p->x + x, p->y + y) == MOVE_RETURN_ENEMY){
 		tile_t *t = getTile(&map, p->x + x, p->y + y);
 
 		fight(t->c);
